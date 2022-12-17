@@ -20,7 +20,6 @@ public class Doctor extends PersonalSanitario {
 	public String diagnosticar(final String DNIpaciente, final String diagnostico) throws Exception {
 		try {
 			final Cita citaActual= Cita.READ(DNIpaciente, this);
-			if (citaActual== null) return "Error, no se ha podido encontrar la cita actual";
 
 			citaActual.setDiagnostico(diagnostico);
 			
@@ -30,13 +29,14 @@ public class Doctor extends PersonalSanitario {
 			return "Error al actualizar la cita.";
 		} catch (SQLException e) {
 			return "Ha ocurrido un error con la base de datos.";
+		} catch (NullPointerException e) {
+			return e.getMessage();
 		}
 	}
 
 	public String cancelarDiagnostico(String DNIpaciente) throws Exception {
 		try {
 			final Cita citaActual= Cita.READ(DNIpaciente, this);
-			if (citaActual== null) return "Error, no se ha podido encontrar la cita actual";
 			
 			if (citaActual.DELETE()) 
 				return "Operación realizada satisfactoriamente";
@@ -44,6 +44,8 @@ public class Doctor extends PersonalSanitario {
 			return "Error al borrar la cita.";
 		} catch (SQLException e) {
 			return "Ha ocurrido un error con la base de datos.";
+		} catch (NullPointerException e) {
+			return e.getMessage();
 		}
 	}
 
