@@ -53,24 +53,30 @@ public class Cita {
 		// obtenemos la fechaYHoraActual para poder saber qué cita de todas las posibles es la que se está llevando a cabo
 		final Date horaActual= new Date();
 
-		Cita citaActual= null;
-		for (int i= 0; i< posiblesCitas.size(); i++)
-			// si la hora actual es mayor que la de inicio de la cita (0)
-			if (horaActual.compareTo(d.parse((String) posiblesCitas.get(i).get(0)))== 0
-			// y si la hora actual es menor que la de finalización de la cita (1)
-			 && horaActual.compareTo(d.parse((String) posiblesCitas.get(i).get(1)))== 0)
+		Date horaInicial;
+		Date horaFinal;
+
+		for (int i= 0; i< posiblesCitas.size(); i++) {
+			// ambas se parsean a una instancia Date
+			// la hora inicial se guarda en la primera columna
+			horaInicial= d.parse((String) posiblesCitas.get(i).get(0));
+			// la hora final se guarda en la segunda columna
+			horaFinal= d.parse((String) posiblesCitas.get(i).get(1));
+			
+			// se compara con la actual, si esta está entre medias
+			if (horaActual.compareTo(horaInicial)== 1 && horaActual.compareTo(horaFinal)== -1)
 				// la cita i es la cita actual
-				citaActual= new Cita(
-						// hora de inicio TODO: ya se ha parseado previamente la hora inicial y final, esto se puede mejorar
-						d.parse((String) posiblesCitas.get(i).get(0)),
-						// hora final
-						d.parse((String) posiblesCitas.get(i).get(1)),
+				return new Cita(
+						horaInicial,
+						horaFinal,
 						// DNI paciente
 						(String) posiblesCitas.get(i).get(3),
-						// doctor
-						doctor);
+						doctor
+				);
+		}
 
-		return citaActual;
+
+		throw new NullPointerException("No se ha encontrado la cita buscada.");
 	}
 
 	public boolean UPDATE() throws Exception {
