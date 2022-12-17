@@ -31,4 +31,15 @@ public abstract class Persona {
 	public boolean DELETE() {
 		throw new UnsupportedOperationException();
 	}
+
+	public String getDNI() {
+		return dni;
+	}
+
+	@Override
+	public String toString() {
+		return "Persona [nombre=" + nombre + ", apellidos=" + apellidos + ", dni=" + dni + "]";
+	}
+	
 }
+	
