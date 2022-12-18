@@ -13,7 +13,7 @@ public class Trabajador extends Persona{
 		super(DNI);
 	}
 
-	public static Trabajador READ(String login, String password) throws Exception {
+	public static Trabajador READ(final String login, final String password) throws Exception {
 		final Agente a= Agente.getAgente();
 
 		final String columns[]= {
@@ -34,6 +34,8 @@ public class Trabajador extends Persona{
 		switch (((String) posiblesTrabajadores.get(0).get(3)).toLowerCase()) {
 		case "doctor": 
 			return new Doctor((String) posiblesTrabajadores.get(0).get(0));
+		case "administrativo":
+			return new Trabajador((String) posiblesTrabajadores.get(0).get(0));
 		default:
 			throw new IllegalArgumentException("No se encuentra el tipo de trabajador: " + (String)posiblesTrabajadores.get(0).get(3)+", contacte con el adminsitrador de la base de datos.");
 		}

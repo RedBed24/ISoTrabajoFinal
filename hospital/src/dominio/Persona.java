@@ -24,7 +24,6 @@ public abstract class Persona {
 
 	public static Persona READ(String DNI) throws Exception {
 		final Agente a= Agente.getAgente();
-		@SuppressWarnings("unused")
 		Vector<Vector<Object>> info= a.select("persona", null, null);
 		return null;
 	}
