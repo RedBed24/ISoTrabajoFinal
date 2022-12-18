@@ -1,6 +1,6 @@
 package dominio;
 
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -17,36 +17,18 @@ public class Doctor extends PersonalSanitario {
 		super(DNI);
 	}
 
-	public String diagnosticar(final String DNIpaciente, final String diagnostico) throws Exception {
-		try {
-			final Cita citaActual= Cita.READ(DNIpaciente, this);
+	public String diagnosticar(final String diagnostico) throws Exception {
+		final Cita citaActual= Cita.READ(this, new Date());
 
-			citaActual.setDiagnostico(diagnostico);
-			
-			if (citaActual.UPDATE())
-				return "Operación realizada satisfactoriamente";
-
-			return "Error al actualizar la cita.";
-		} catch (SQLException e) {
-			return "Ha ocurrido un error con la base de datos.";
-		} catch (NullPointerException e) {
-			return e.getMessage();
-		}
+		citaActual.setDiagnostico(diagnostico);
+		
+		return citaActual.UPDATE() ? "Operación realizada satisfactoriamente" : "Error al actualizar la cita.";
 	}
 
-	public String cancelarDiagnostico(String DNIpaciente) throws Exception {
-		try {
-			final Cita citaActual= Cita.READ(DNIpaciente, this);
-			
-			if (citaActual.DELETE()) 
-				return "Operación realizada satisfactoriamente";
-
-			return "Error al borrar la cita.";
-		} catch (SQLException e) {
-			return "Ha ocurrido un error con la base de datos.";
-		} catch (NullPointerException e) {
-			return e.getMessage();
-		}
+	public String cancelarDiagnostico() throws Exception {
+		final Cita citaActual= Cita.READ(this, new Date());
+		
+		return citaActual.DELETE() ? "Operación realizada satisfactoriamente" : "Error al borrar la cita." ;
 	}
 
 	/**
@@ -63,8 +45,16 @@ public class Doctor extends PersonalSanitario {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean estoOcupadoEn(String fechayHora) {
-		throw new UnsupportedOperationException();
+	public boolean estaOcupadoEn(final Date fechaInicio, final Date fechaFin) throws Exception {
+		try {
+			// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
+			Cita.READ(this, fechaInicio);
+			Cita.READ(this, fechaFin);
+			return true;
+		} catch (NullPointerException e) {
+			// si no se puede leer una cita, el paciente no esta ocupado
+			return false;
+		}
 	}
 
 }
