@@ -8,10 +8,13 @@ CREATE TABLE `iso`.`citas` (
   `DNIdoctor` VARCHAR(9) NOT NULL,
   PRIMARY KEY (`fechaYhoraInicial`, `fechaYhoraFinal`, `DNIdoctor`, `DNIpaciente`));
  
- CREATE TABLE `iso`.`trabajadores` (
+CREATE TABLE `iso`.`trabajadores` (
   `DNI` VARCHAR(9) NOT NULL,
   `login` VARCHAR(20) NOT NULL,
   `password` VARCHAR(20) NOT NULL,
   `type` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`DNI`, `login`, `password`));
    
+CREATE TABLE `iso`.`pacientes` (
+  `DNI` VARCHAR(9) NOT NULL,
+  PRIMARY KEY (`DNI`));
