@@ -13,8 +13,8 @@ public class Doctor extends PersonalSanitario {
 	private String consulta;
 	public Vector<Cita> realiza = new Vector<Cita>();
 	
-	public Doctor() {
-		super();
+	public Doctor(final String DNI) {
+		super(DNI);
 	}
 
 	public String diagnosticar(final String DNIpaciente, final String diagnostico) throws Exception {

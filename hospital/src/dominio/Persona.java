@@ -13,6 +13,10 @@ public abstract class Persona {
 	protected String provincia;
 	protected String telefono;
 	protected String direccion;
+	
+	public Persona(final String DNI) {
+		this.dni= DNI;
+	}
 
 	public boolean CREATE() {
 		throw new UnsupportedOperationException();
@@ -20,6 +24,7 @@ public abstract class Persona {
 
 	public static Persona READ(String DNI) throws Exception {
 		final Agente a= Agente.getAgente();
+		@SuppressWarnings("unused")
 		Vector<Vector<Object>> info= a.select("persona", null, null);
 		return null;
 	}

@@ -8,6 +8,10 @@ import java.util.Vector;
 public class PersonalSanitario extends Trabajador {
 	// informe
 	public Vector<String> realiza = new Vector<String>();
+	
+	public PersonalSanitario(final String DNI) {
+		super(DNI);
+	}
 
 	/**
 	 * Paciente paciente= READ pacientes WHERE DNI='DNIpaciente'

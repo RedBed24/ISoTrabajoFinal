@@ -7,6 +7,7 @@ public class Paciente extends Persona {
 	public Ingreso esta;
 
 	public Paciente(PrioridadPaciente prioridad, String historial) {
+		super("DNI");
 		throw new UnsupportedOperationException();
 	}
 

@@ -53,8 +53,7 @@ public class Cita {
 		// obtenemos la fechaYHoraActual para poder saber qué cita de todas las posibles es la que se está llevando a cabo
 		final Date horaActual= new Date();
 
-		Date horaInicial;
-		Date horaFinal;
+		Date horaInicial, horaFinal;
 
 		for (int i= 0; i< posiblesCitas.size(); i++) {
 			// ambas se parsean a una instancia Date
@@ -64,6 +63,7 @@ public class Cita {
 			horaFinal= d.parse((String) posiblesCitas.get(i).get(1));
 			
 			// se compara con la actual, si esta está entre medias
+			System.out.println(horaActual.compareTo(horaInicial));
 			if (horaActual.compareTo(horaInicial)== 1 && horaActual.compareTo(horaFinal)== -1)
 				// la cita i es la cita actual
 				return new Cita(
