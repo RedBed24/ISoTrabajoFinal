@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import dominio.ControlAutenticacion;
 import dominio.Doctor;
 import dominio.Trabajador;
 
@@ -14,10 +15,10 @@ public class Main implements persistencia.BDConstantes {
 		while (true) {
 			try {
 				// instancia del trabajador obtenida por el login
-				final Trabajador trabajador= Trabajador.READ("samuel", "espejo");
+				final Trabajador trabajador= ControlAutenticacion.autenticar("samuel", "espejo");
 
 				if (trabajador instanceof Doctor) menúDoctor((Doctor)trabajador);
-				else menúAdministrativo(trabajador);
+				else menúAdministrativo();
 
 			} catch (NullPointerException e) {
 				System.err.println(e.getMessage());
@@ -29,7 +30,7 @@ public class Main implements persistencia.BDConstantes {
 		}
 	}
 
-	private static void menúAdministrativo(Trabajador trabajador) {
+	private static void menúAdministrativo() {
 		throw new UnsupportedOperationException("El menú del adiminstativo todavía no está preparado.");
 	}
 

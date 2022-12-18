@@ -7,7 +7,7 @@ public class ControlAutenticacion {
 	 * Comprobar que trabajador tiene el password correspondiente 
 	 * devolverlo
 	 */
-	public Trabajador autenticar(String login, String password) {
-		throw new UnsupportedOperationException();
+	public static Trabajador autenticar(final String login, final String password) throws Exception {
+		return Trabajador.READ(login, password);
 	}
 }
