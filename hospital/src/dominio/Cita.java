@@ -45,7 +45,7 @@ public class Cita {
 				doctor.getDNI(),
 		};
 		// para poder pasar String con fechas a Date
-		final DateFormat d= DateFormat.getDateInstance();
+		final DateFormat d= DateFormat.getDateTimeInstance();
 		
 		// leemos todas las citas asociadas a este doctor y este paciente
 		Vector<Vector<Object>> posiblesCitas= a.select("citas", columns, values);
@@ -63,8 +63,7 @@ public class Cita {
 			horaFinal= d.parse((String) posiblesCitas.get(i).get(1));
 			
 			// se compara con la actual, si esta está entre medias
-			System.out.println(horaActual.compareTo(horaInicial));
-			if (horaActual.compareTo(horaInicial)== 1 && horaActual.compareTo(horaFinal)== -1)
+			if (horaActual.after(horaInicial) && horaActual.before(horaFinal))
 				// la cita i es la cita actual
 				return new Cita(
 						horaInicial,
@@ -92,7 +91,7 @@ public class Cita {
 				"DNIdoctor",
 		};
 		final String identificacion[]= {
-				fechaYHoraFinal.toString(),
+				DateFormat.getDateTimeInstance().format(fechaYHoraInicial),
 				pacienteCitado.getDNI(),
 				doctor.getDNI(),
 		};
@@ -110,7 +109,7 @@ public class Cita {
 				"DNIdoctor",
 		};
 		final String identificacion[]= {
-				fechaYHoraFinal.toString(),
+				DateFormat.getDateTimeInstance().format(fechaYHoraInicial),
 				pacienteCitado.getDNI(),
 				doctor.getDNI(),
 		};
