@@ -1,11 +1,12 @@
 package dominio;
 
+import java.util.Date;
 import java.util.Vector;
 
 import persistencia.Agente;
 
 public class Paciente extends Persona {
-	public enum PrioridadPaciente { VITAL, };
+	public enum PrioridadPaciente { MILD, SEVERE, VITAL, };
 	private PrioridadPaciente prioridad;
 	private String historialClinico;
 	public Ingreso esta;
@@ -45,11 +46,29 @@ public class Paciente extends Persona {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean estaOcupadoEn(String fechayHora) {
-		throw new UnsupportedOperationException();
+	public boolean estaOcupadoEn(final Date fechaInicio, final Date fechaFin) throws Exception {
+		try {
+			// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
+			// realmente puede existir una cita entre medias si hacemos que las citas tengan una longitud mínima, no
+			Cita.READ(this, fechaInicio);
+			Cita.READ(this, fechaFin);
+			return true;
+		} catch (NullPointerException e) {
+			// si no se puede leer una cita, el paciente no esta ocupado
+			return false;
+		}
 	}
 
 	public String cuandoEstaOcupado() {
 		throw new UnsupportedOperationException();
 	}
+
+	public void setPrioridad(PrioridadPaciente prioridad) {
+		this.prioridad= prioridad;
+	}
+
+	public PrioridadPaciente getPrioridad() {
+		return prioridad;
+	}
+	
 }
