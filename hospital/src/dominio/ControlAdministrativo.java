@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.Date;
+
 public class ControlAdministrativo {
 
 	/**
@@ -15,42 +17,38 @@ public class ControlAdministrativo {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * String estado; 
-	 * try {
-	 * Paciente paciente= READ pacientes WHERE DNI='DNIpaciente' 
-	 * Si no existe paciente 
-	 *         paciente= crear nuevo paciente con solo su DNI
-	 * Si paciente.ocupado(fecha) 
-	 *         Exteption "El paciente ya cuenta con una cita en la fecha" 
-	 * paciente.setPrioridad(prioridad) 
-	 * 
-	 * if prioridad== Vital 
-	 *         ingreso= new Ingreso(paciente); 
-	 *         paciente.asignar(ingreso);
-	 *         VitalException 
-	 * 
-	 * Doctor doctor= READ doctores WHERE DNI='DNIdoctor' 
-	 * Si no existe doctor 
-	 *         Exception "Doctor no encontrado" 
-	 * 
-	 * Si doctor.ocupado(fecha) 
-	 *         Exception "Doctor ocupado en la fecha especificada" 
-	 * 
-	 * Cita cita= crear Cita(fecha, paciente, doctor) 
-	 * 
-	 * Asignar cita a doctor 
-	 * Asignar cita a paciente 
-	 * 
-	 * } catch (VitalException) { 
-	 *         estado= "Se debe 
-	 * } catch (Exception e) { 
-	 *         estado= e.mesage; 
-	 * } 
-	 * devolver estado
-	 */
-	public String organizarCitasAutomotico(String DNIpaciente, String DNIDoctor, String fecha, Paciente.PrioridadPaciente prioridad) {
-		throw new UnsupportedOperationException();
+	public static String organizarCitasAutomatico(final String DNIpaciente, final String DNIDoctor, final Date fechaInicio, final Date fechaFin, Paciente.PrioridadPaciente prioridad) {
+		try {
+			Paciente paciente;
+			try {
+				paciente= (Paciente) Paciente.READ(DNIpaciente);
+			} catch (NullPointerException e) {
+				System.out.println("El paciente no existía, se ha añadido automáticamente a la base de datos. Será necesario añadir información administrativa.");
+				paciente= new Paciente(DNIpaciente);
+				paciente.CREATE();
+			}
+			if (paciente.estaOcupadoEn(fechaInicio, fechaFin)) throw new IllegalArgumentException("El paciente está ocupado durante la fecha especificada.");
+			
+			paciente.setPrioridad(prioridad);
+
+			if (paciente.getPrioridad()== Paciente.PrioridadPaciente.VITAL) { 
+				  //Ingreso ingreso= new Ingreso(paciente); 
+				  //paciente.asignar(ingreso);
+			}
+
+			// class cast exception,
+			final Doctor doctor= (Doctor) Doctor.READ(DNIDoctor);
+
+			if (doctor.estaOcupadoEn(fechaInicio, fechaFin)) throw new IllegalArgumentException("El doctor está ocupado durante la fecha especificada.");
+
+			final Cita cita= new Cita(fechaInicio, fechaFin, paciente, doctor);
+			if (!cita.CREATE()) return "No se ha podido guardar la cita en la base de datos...";
+			
+			return "Se ha guardado la cita correctamente";
+
+		} catch (Exception e) { 
+			return e.getMessage();
+		} 
 	}
 
 	/**
