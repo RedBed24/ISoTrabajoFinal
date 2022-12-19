@@ -8,7 +8,6 @@ public class ControlAdministrativo {
 		try {
 			paciente= (Paciente) Paciente.READ(DNIpaciente);
 		} catch (NullPointerException e) {
-			System.out.println("El paciente no existía, se ha añadido automáticamente a la base de datos. Será necesario añadir información administrativa.");
 			paciente= new Paciente(DNIpaciente);
 			paciente.CREATE();
 		}
