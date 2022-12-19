@@ -35,16 +35,22 @@ public class Paciente extends Persona {
 	}
 
 	public boolean estaOcupadoEn(final Date fechaInicio, final Date fechaFin) throws Exception {
+		// for (fecha inicio hasta hecha fin de 5 mins en 5 mins)
 		try {
 			// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
-			// realmente puede existir una cita entre medias si hacemos que las citas tengan una longitud mínima, no
 			Cita.READ(this, fechaInicio);
+			return true;
+		} catch (NullPointerException e) {
+			// si no se puede leer una cita, el paciente no esta ocupado
+		}
+		try {
+			// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
 			Cita.READ(this, fechaFin);
 			return true;
 		} catch (NullPointerException e) {
 			// si no se puede leer una cita, el paciente no esta ocupado
-			return false;
 		}
+		return false;
 	}
 
 	public void setPrioridad(PrioridadPaciente prioridad) {
