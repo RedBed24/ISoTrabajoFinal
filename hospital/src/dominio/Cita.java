@@ -8,9 +8,6 @@ import java.util.Vector;
 import persistencia.Agente;
 
 public class Cita {
-	/* En la base de datos se guardará:
-	 * fechaYhoraInicial; fechaYhoraFinal; diagnostico; DNIpaciente; DNIdoctor
-	 */
 	private Date fechaYHoraInicial;
 	private Date fechaYHoraFinal;
 	private String diagnostico;
@@ -179,11 +176,4 @@ public class Cita {
 		
 		return a.delete("citas", columnsIdentificativas, identificacion)== 1;
 	}
-
-	@Override
-	public String toString() {
-		return "Cita [fechaYHoraInicial=" + fechaYHoraInicial + ", fechaYHoraFinal=" + fechaYHoraFinal
-				+ ", diagnostico=" + diagnostico + ", pacienteCitado=" + pacienteCitado + ", doctor=" + doctor + "]";
-	}
-
 }

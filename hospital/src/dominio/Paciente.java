@@ -8,16 +8,18 @@ import persistencia.Agente;
 public class Paciente extends Persona {
 	public enum PrioridadPaciente { MILD, SEVERE, VITAL, };
 	private PrioridadPaciente prioridad;
-	private String historialClinico;
-	public Ingreso esta;
+	public Ingreso ingreso;
 	
 	public Paciente(final String DNI) {
 		super(DNI);
 	}
 
-	public Paciente(PrioridadPaciente prioridad, String historial) {
-		super("DNI");
-		throw new UnsupportedOperationException();
+	public boolean CREATE() throws Exception {
+		final Agente a= Agente.getAgente();
+		final String columns[]= { "DNI" };
+		final String values[]= { dni };
+
+		return a.insert("pacientes", columns, values)== 1;
 	}
 
 	public static Persona READ(String DNI) throws Exception {
@@ -27,23 +29,9 @@ public class Paciente extends Persona {
 
 		Vector<Vector<Object>> posiblePaciente= a.select("pacientes", columnas, valores);
 		
-		if (posiblePaciente.size()!= 1) throw new NullPointerException("No se ha encontrado el trabajador buscado.");
+		if (posiblePaciente.size()!= 1) throw new NullPointerException("No se ha encontrado la persona con el DNI buscado.");
 		
 		return new Paciente((String) posiblePaciente.get(0).get(0));
-	}
-
-	public String actualizarDatosAdministrativos(String[] info) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * historialCl�nico+= entrada;
-	 * 
-	 * Update() en nuestra base de datos
-	 * Update()  en el SESCAM
-	 */
-	public void actualizarHistorial(String entrada) {
-		throw new UnsupportedOperationException();
 	}
 
 	public boolean estaOcupadoEn(final Date fechaInicio, final Date fechaFin) throws Exception {
@@ -57,10 +45,6 @@ public class Paciente extends Persona {
 			// si no se puede leer una cita, el paciente no esta ocupado
 			return false;
 		}
-	}
-
-	public String cuandoEstaOcupado() {
-		throw new UnsupportedOperationException();
 	}
 
 	public void setPrioridad(PrioridadPaciente prioridad) {

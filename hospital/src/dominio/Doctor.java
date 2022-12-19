@@ -3,15 +3,9 @@ package dominio;
 import java.util.Date;
 import java.util.Vector;
 
-/**
- * Debemos tener alg�n tipo de informaci�n para saber cu�ndo un doctor puede ser citado:
- * Ya sea porque todos los doctores tengan un horario fijo y sean las citas quienes indiquen que ese Doctor est� ocupado en esa fecha
- * O porque tengamos un sistema m�s complejo de Agenda personal del doctor
- */
+import persistencia.Agente;
+
 public class Doctor extends PersonalSanitario {
-	private String especialidad;
-	private String consulta;
-	public Vector<Cita> realiza = new Vector<Cita>();
 	
 	public Doctor(final String DNI) {
 		super(DNI);
@@ -31,18 +25,18 @@ public class Doctor extends PersonalSanitario {
 		return citaActual.DELETE() ? "Operación realizada satisfactoriamente" : "Error al borrar la cita." ;
 	}
 
-	/**
-	 * Informaci�nADevolver
-	 * Para cada Cita
-	 *         Informaci�nADevolver+= Cita.toString()
-	 * devolver Informaci�nADevolver
-	 */
-	public String informacionDetalladaCitas() {
-		throw new UnsupportedOperationException();
-	}
+	public static Persona READ(final String DNI) throws Exception {
+		final Agente a= Agente.getAgente();
+		final String columnas[]= { "DNI", };
+		final String valores[]= { DNI, };
 
-	public String cuandoEstoOcupado() {
-		throw new UnsupportedOperationException();
+		final Vector<Vector<Object>> posibleDoctor= a.select("trabajadores", columnas, valores);
+		
+		if (posibleDoctor.size()!= 1) throw new NullPointerException("No se ha encontrado el doctor buscado.");
+		
+		if (((String) posibleDoctor.get(0).get(3)).equalsIgnoreCase("doctor")) throw new IllegalArgumentException("El DNI "+DNI+" no es de un doctor.");
+
+		return new Doctor((String) posibleDoctor.get(0).get(0));
 	}
 
 	public boolean estaOcupadoEn(final Date fechaInicio, final Date fechaFin) throws Exception {
