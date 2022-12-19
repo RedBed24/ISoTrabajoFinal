@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 public class IDiagnosticar extends JFrame {
 
 	private JPanel contentPane; // Formulario 
+	private JTextPane textPaneDiagnostico; // Panel de texto
 	private JTextPane textPaneEstado; // Panel de texto
 
 	/**
@@ -40,34 +41,44 @@ public class IDiagnosticar extends JFrame {
 		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensi�n por lo que hacemos que no se pueda maximizar.
 		setBounds(200, 200, 437, 600); // Dimensiones fijas del formulario al abrirlo.
 		setLocationRelativeTo(null); // Tras fijar las dimensiones, hacemos que el formulario se abra en el centro de la pantalla.
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierra solamente la ventana emergente
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra solamente la ventana emergente
 		
 		// Etiquetas
 		
-		JLabel lblEstado = new JLabel("Diagnostico");
-		lblEstado.setForeground(Color.RED);
-		lblEstado.setBounds(160, 10, 200, 30);
-		lblEstado.setFont(new Font("Arial",3, 20));
-		contentPane.add(lblEstado);
+		JLabel lblDiagnostico = new JLabel("Diagnostico");
+		lblDiagnostico.setForeground(Color.RED);
+		lblDiagnostico.setBounds(160, 10, 200, 30);
+		lblDiagnostico.setFont(new Font("Arial",3, 20));
+		contentPane.add(lblDiagnostico);
 		
 		// Valores de los atributos correspondientes al panel
 			
-		textPaneEstado = new JTextPane();
-		textPaneEstado.setToolTipText("Esta informacion sera una nueva entrada del historial clinico del paciente");
-		textPaneEstado.setEditable(true);
-		textPaneEstado.setBounds(6, 50, 407, 450);
-		contentPane.add(textPaneEstado);
+		textPaneDiagnostico = new JTextPane();
+		textPaneDiagnostico.setToolTipText("Esta informacion sera una nueva entrada del historial clinico del paciente");
+		textPaneDiagnostico.setEditable(true);
+		textPaneDiagnostico.setBounds(6, 50, 407, 330);
+		contentPane.add(textPaneDiagnostico);
 		
+		JLabel lblEstado = new JLabel("Estado");
+		lblEstado.setForeground(Color.RED);
+		lblEstado.setBounds(180, 390, 200, 30);
+		lblEstado.setFont(new Font("Arial",3, 20));
+		contentPane.add(lblEstado);
+
+		textPaneEstado= new JTextPane();
+		textPaneEstado.setToolTipText("Aquí se mostrará el estado de realizar la operación");
+		textPaneEstado.setEditable(false);
+		textPaneEstado.setBounds(6, 420, 407, 60);
+		contentPane.add(textPaneEstado);
 		// Bot�n Diagnosticar
 		
 		JButton btnDiagnosticar = new JButton("Diagnosticar");
 		btnDiagnosticar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) { // Elimina al usuario (o no) e informa de la situaci�n.
 				try {
-					doctor.diagnosticar(textPaneEstado.getText());
+					textPaneEstado.setText(doctor.diagnosticar(textPaneDiagnostico.getText()));
 				} catch (Exception e) {
-					// TODO: necesito mostrar la info de esto
-					System.err.println(e);
+					textPaneEstado.setText(e.getMessage());
 				}
 			}
 		});
@@ -76,14 +87,13 @@ public class IDiagnosticar extends JFrame {
 		
 		// Bot�n Cancelar
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnCancelar = new JButton("Cancelar la cita");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					doctor.cancelarDiagnostico();
+					textPaneEstado.setText(doctor.cancelarDiagnostico());
 				} catch (Exception e) {
-					// TODO: lo mismo
-					System.err.println(e);
+					textPaneEstado.setText(e.getMessage());
 				}
 			}
 		});

@@ -118,6 +118,7 @@ public class IAutenticación extends JFrame {
 						IOrganizarCitas frameCitas= new IOrganizarCitas();
 						frameCitas.setVisible(true);
 					}
+					setVisible(false);
 				} catch (Exception e) {
 					textPaneEstado.setText(e.getMessage());
 				}

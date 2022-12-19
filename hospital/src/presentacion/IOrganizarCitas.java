@@ -9,11 +9,14 @@ import excepciones.*;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.Date;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 public class IOrganizarCitas extends JFrame {
@@ -21,8 +24,10 @@ public class IOrganizarCitas extends JFrame {
 	private JPanel contentPane; // Formulario
 	private JTextField textFieldDNIPaciente; // Campo de texto del DNI del paciente
 	private JTextField textFieldDNIDoctor; // Campo de texto del DNI del doctor
-	private JTextField textFieldFechaHora; // Campo de texto de la fecha y hora
+	private JTextField textFieldFechaHoraInicial; // Campo de texto de la fecha y hora
+	private JTextField textFieldFechaHoraFinal; // Campo de texto de la fecha y hora
 	private JTextField textFieldPrioridad; // Campo de texto de la prioridad del paciente
+	private JTextPane textPaneEstado; // Panel de texto
 	
 	/**
 	 * Creaci�n de la estructura
@@ -39,9 +44,9 @@ public class IOrganizarCitas extends JFrame {
 		setContentPane(contentPane);
 		setTitle("IOrganizarCitas");
 		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensi�n por lo que hacemos que no se pueda maximizar.
-		setBounds(200, 200, 437, 330); // Dimensiones fijas del formulario al abrirlo.
+		setBounds(200, 200, 437, 480); // Dimensiones fijas del formulario al abrirlo.
 		setLocationRelativeTo(null); // Tras fijar las dimensiones, hacemos que el formulario se abra en el centro de la pantalla.
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierra solamente la ventana emergente.
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra solamente la ventana emergente.
 		
 		// Etiquetas
 		
@@ -53,14 +58,23 @@ public class IOrganizarCitas extends JFrame {
 		lblDNIDoctor.setBounds(55, 80, 100, 16);
 		contentPane.add(lblDNIDoctor);
 		
-		JLabel lblFechaHora = new JLabel("Fecha y Hora");
-		lblFechaHora.setBounds(50, 130, 100, 16);
+		JLabel lblFechaHora = new JLabel("Fecha y Hora de inicio");
+		lblFechaHora.setBounds(20, 130, 100, 36);
 		contentPane.add(lblFechaHora);
 		
+		JLabel lblFechaHoraFinal = new JLabel("Fecha y Hora de final");
+		lblFechaHoraFinal.setBounds(20, 180, 100, 36);
+		contentPane.add(lblFechaHoraFinal);
+
 		JLabel lblPrioridad = new JLabel("Prioridad");
-		lblPrioridad.setBounds(58, 180, 100, 16);
+		lblPrioridad.setBounds(58, 230, 100, 16);
 		contentPane.add(lblPrioridad);
 		
+		JLabel lblEstado = new JLabel("Estado");
+		lblEstado.setForeground(Color.RED);
+		lblEstado.setBounds(180, 340, 200, 30);
+		lblEstado.setFont(new Font("Arial",3, 20));
+		contentPane.add(lblEstado);
 		
 		// Valores de los atributos correspondientes a los campos de texto
 		
@@ -74,15 +88,26 @@ public class IOrganizarCitas extends JFrame {
 		textFieldDNIDoctor.setColumns(10);
 		contentPane.add(textFieldDNIDoctor);
 		
-		textFieldFechaHora = new JTextField();
-		textFieldFechaHora.setBounds(180, 130, 200, 28);
-		textFieldFechaHora.setColumns(10);
-		contentPane.add(textFieldFechaHora);
+		textFieldFechaHoraInicial = new JTextField();
+		textFieldFechaHoraInicial.setBounds(180, 130, 200, 28);
+		textFieldFechaHoraInicial.setColumns(10);
+		contentPane.add(textFieldFechaHoraInicial);
 		
+		textFieldFechaHoraFinal= new JTextField();
+		textFieldFechaHoraFinal.setBounds(180, 180, 200, 28);
+		textFieldFechaHoraFinal.setColumns(10);
+		contentPane.add(textFieldFechaHoraFinal);
+
 		textFieldPrioridad = new JTextField();
-		textFieldPrioridad.setBounds(180, 180, 200, 28);
+		textFieldPrioridad.setBounds(180, 230, 200, 28);
 		textFieldPrioridad.setColumns(10);
 		contentPane.add(textFieldPrioridad);
+		
+		textPaneEstado= new JTextPane();
+		textPaneEstado.setToolTipText("Aquí se mostrará el estado de realizar la operación");
+		textPaneEstado.setEditable(false);
+		textPaneEstado.setBounds(6, 370, 407, 60);
+		contentPane.add(textPaneEstado);
 		
 		// Bot�n Organizar citas
 		
@@ -91,9 +116,8 @@ public class IOrganizarCitas extends JFrame {
 			public void actionPerformed(ActionEvent arg0) { // Registra al usuario introducido (o no) e informa de la situaci�n.
 				try {
 					final DateFormat d= DateFormat.getDateTimeInstance();
-					final Date fechaInicio= d.parse(textFieldFechaHora.getText());
-					// TODO: necesito recoger la otra fecha
-					final Date fechaFin= d.parse(textFieldFechaHora.getText());
+					final Date fechaInicio= d.parse(textFieldFechaHoraInicial.getText());
+					final Date fechaFin= d.parse(textFieldFechaHoraFinal.getText());
 
 					if (fechaInicio.after(fechaFin)) throw new IllegalArgumentException("Error, la fecha de inicio está tras la fecha de fin.");
 					if (fechaInicio.before(new Date())) throw new IllegalArgumentException("Error, la fecha espeficificada ya ha pasadao.");
@@ -106,15 +130,13 @@ public class IOrganizarCitas extends JFrame {
 					default: throw new IllegalArgumentException("Error, no se ha introducido una de las posibles prioridades.");
 					}
 
-					// TODO: necesito mostrar la info que devuelve esto
-					dominio.ControlAdministrativo.organizarCitasAutomotico(textFieldDNIPaciente.getText(), textFieldDNIDoctor.getText(), fechaInicio, fechaFin, prioridad);
+					textPaneEstado.setText(dominio.ControlAdministrativo.organizarCitasAutomotico(textFieldDNIPaciente.getText(), textFieldDNIDoctor.getText(), fechaInicio, fechaFin, prioridad));
 				} catch (Exception e) {
-					// TODO: necesito mostrar la info de esto
-					System.err.println(e);
+					textPaneEstado.setText(e.getMessage());
 				}
 			}
 		});
-		btnOrganizarCitas.setBounds(220, 240, 141, 29); // Dimensiones fijas
+		btnOrganizarCitas.setBounds(220, 290, 141, 29); // Dimensiones fijas
 		contentPane.add(btnOrganizarCitas);
 
 		// Bot�n Limpiar
@@ -124,11 +146,13 @@ public class IOrganizarCitas extends JFrame {
 			public void actionPerformed(ActionEvent arg0) { // Se limpian los campos de texto y el panel.
 				textFieldDNIPaciente.setText("");
 				textFieldDNIDoctor.setText("");
-				textFieldFechaHora.setText("");
+				textFieldFechaHoraInicial.setText("");
+				textFieldFechaHoraFinal.setText("");
 				textFieldPrioridad.setText("");
+				textPaneEstado.setText("");
 			}
 		});
-		buttonLimpiar.setBounds(60, 240, 141, 29); // Dimensiones fijas
+		buttonLimpiar.setBounds(60, 290, 141, 29); // Dimensiones fijas
 		contentPane.add(buttonLimpiar);
 	}
 }
