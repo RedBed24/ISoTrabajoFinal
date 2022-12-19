@@ -35,20 +35,14 @@ public class Paciente extends Persona {
 	}
 
 	public boolean estaOcupadoEn(final Date fechaInicio, final Date fechaFin) throws Exception {
-		// for (fecha inicio hasta hecha fin de 5 mins en 5 mins)
-		try {
-			// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
-			Cita.READ(this, fechaInicio);
-			return true;
-		} catch (NullPointerException e) {
-			// si no se puede leer una cita, el paciente no esta ocupado
-		}
-		try {
-			// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
-			Cita.READ(this, fechaFin);
-			return true;
-		} catch (NullPointerException e) {
-			// si no se puede leer una cita, el paciente no esta ocupado
+		for (long horaAComprobar= fechaInicio.getTime(); horaAComprobar<= fechaFin.getTime(); horaAComprobar+= 9*60000) {
+			try {
+				// si se puede leer una cita en esta fecha, es que el paciente ya estaba citado
+				Cita.READ(this, new Date(horaAComprobar));
+				return true;
+			} catch (NullPointerException e) {
+				// si no se puede leer una cita, el paciente no esta ocupado
+			}
 		}
 		return false;
 	}
