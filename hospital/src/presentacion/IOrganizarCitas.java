@@ -11,12 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.JTextPane;
-
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 
 public class IOrganizarCitas extends JFrame {
@@ -28,7 +25,7 @@ public class IOrganizarCitas extends JFrame {
 	private JTextField textFieldPrioridad; // Campo de texto de la prioridad del paciente
 	
 	/**
-	 * Creación de la estructura
+	 * Creaciï¿½n de la estructura
 	 */
 	
 	public IOrganizarCitas() {
@@ -41,7 +38,7 @@ public class IOrganizarCitas extends JFrame {
 									  * aunque no nos permita redimensionar la ventana. */
 		setContentPane(contentPane);
 		setTitle("IOrganizarCitas");
-		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensión por lo que hacemos que no se pueda maximizar.
+		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensiï¿½n por lo que hacemos que no se pueda maximizar.
 		setBounds(200, 200, 437, 330); // Dimensiones fijas del formulario al abrirlo.
 		setLocationRelativeTo(null); // Tras fijar las dimensiones, hacemos que el formulario se abra en el centro de la pantalla.
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierra solamente la ventana emergente.
@@ -87,35 +84,40 @@ public class IOrganizarCitas extends JFrame {
 		textFieldPrioridad.setColumns(10);
 		contentPane.add(textFieldPrioridad);
 		
-		// Botón Organizar citas
+		// Botï¿½n Organizar citas
 		
 		JButton btnOrganizarCitas = new JButton("Organizar citas");
 		btnOrganizarCitas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) { // Registra al usuario introducido (o no) e informa de la situación.
-				/*try {
-					// Se crea un objeto Usuario con lo escrito en las casillas correspondientes al login y al password.
-					Trabajador u = new Trabajador(textFieldLogin.getText(), textFieldPassword.getText());
-					
-					// Introduce el usuario en la base de datos.
-					u.insert();
-					
-					// Si no ha saltado una excepción anteriormente, la cuenta del usuario se ha creado correctamente.
-					textPaneEstado.setText("Usuario creado correctamente.");
-					
-				} catch (InvalidLoginException e) {
-					textPaneEstado.setText("No se cumple el mínimo de caracteres en el login. Debe tener al menos 4 caracteres.");
-				} catch (InvalidPasswordException e) {
-					textPaneEstado.setText("No se cumple el minimo de caracteres en el password. Debe tener al menos 4 caracteres.");
-				} catch (Exception e) {
-					textPaneEstado.setText("No se ha podido crear el usuario porque ya existe uno con ese login.");
-				}*/
+			public void actionPerformed(ActionEvent arg0) { // Registra al usuario introducido (o no) e informa de la situaciï¿½n.
+				try {
+					final DateFormat d= DateFormat.getDateTimeInstance();
+					final Date fechaInicio= d.parse(textFieldFechaHora.getText());
+					// TODO: necesito recoger la otra fecha
+					final Date fechaFin= d.parse(textFieldFechaHora.getText());
 
+					if (fechaInicio.after(fechaFin)) throw new IllegalArgumentException("Error, la fecha de inicio estÃ¡ tras la fecha de fin.");
+					if (fechaInicio.before(new Date())) throw new IllegalArgumentException("Error, la fecha espeficificada ya ha pasadao.");
+
+					final Paciente.PrioridadPaciente prioridad;
+					switch (textFieldPrioridad.getText().toLowerCase()) {
+					case "vital": prioridad= dominio.Paciente.PrioridadPaciente.VITAL; break;
+					case "severe": prioridad= dominio.Paciente.PrioridadPaciente.SEVERE; break;
+					case "mild": prioridad= dominio.Paciente.PrioridadPaciente.MILD; break;
+					default: throw new IllegalArgumentException("Error, no se ha introducido una de las posibles prioridades.");
+					}
+
+					// TODO: necesito mostrar la info que devuelve esto
+					dominio.ControlAdministrativo.organizarCitasAutomotico(textFieldDNIPaciente.getText(), textFieldDNIDoctor.getText(), fechaInicio, fechaFin, prioridad);
+				} catch (Exception e) {
+					// TODO: necesito mostrar la info de esto
+					System.err.println(e);
+				}
 			}
 		});
 		btnOrganizarCitas.setBounds(220, 240, 141, 29); // Dimensiones fijas
 		contentPane.add(btnOrganizarCitas);
 
-		// Botón Limpiar
+		// Botï¿½n Limpiar
 		
 		JButton buttonLimpiar = new JButton("Limpiar");
 		buttonLimpiar.addActionListener(new ActionListener() {

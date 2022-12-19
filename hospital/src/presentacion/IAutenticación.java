@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 
-public class IAutenticación extends JFrame {
+public class IAutenticaciÃ³n extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldLogin;
@@ -28,14 +28,14 @@ public class IAutenticación extends JFrame {
 	private JTextPane textPaneEstado;
 
 	/** 
-	 * Arranca la aplicación
+	 * Arranca la aplicaciï¿½n
 	 */
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					IAutenticación frame = new IAutenticación();
+					IAutenticaciÃ³n frame = new IAutenticaciÃ³n();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,12 +45,12 @@ public class IAutenticación extends JFrame {
 	}
 
 	/**
-	 * Creación del formulario
+	 * Creaciï¿½n del formulario
 	 */
 	
-	public IAutenticación() {
+	public IAutenticaciÃ³n() {
 		
-		// Ventana principal de la aplicación
+		// Ventana principal de la aplicaciï¿½n
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -58,11 +58,11 @@ public class IAutenticación extends JFrame {
 		   							  * aunque no nos permita redimensionar la ventana. */
 		
 		setContentPane(contentPane);
-		setTitle(" IAutenticación ");
-		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensión por lo que hacemos que no se pueda maximizar.
+		setTitle(" IAutenticacion ");
+		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensiï¿½n por lo que hacemos que no se pueda maximizar.
 		setBounds(200, 200, 435, 375); // Dimensiones fijas del formulario al abrirlo.
 		setLocationRelativeTo(null); // Tras fijar las dimensiones, hacemos que el formulario se abra en el centro de la pantalla.
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicación.
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicaciï¿½n.
 		
 		// Etiquetas
 
@@ -98,46 +98,35 @@ public class IAutenticación extends JFrame {
 		contentPane.add(textFieldPassword);
 			
 		textPaneEstado = new JTextPane();
-		textPaneEstado.setToolTipText("Panel para mostrar el restultado de la comprobación de login o las excepciones lanzadas");
+		textPaneEstado.setToolTipText("Panel para mostrar el restultado de la comprobaciï¿½n de login o las excepciones lanzadas");
 		textPaneEstado.setEditable(false);
 		textPaneEstado.setBounds(7, 240, 410, 90);
 		contentPane.add(textPaneEstado);
 
-		// Botón Iniciar sesión
+		// Botï¿½n Iniciar sesiï¿½n
 		
-		JButton buttonAceptar = new JButton("Iniciar sesión");
+		JButton buttonAceptar = new JButton("Iniciar sesion");
 		buttonAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) { // Autentica al usuario e informa de la situación dada.
-				//try {
-					// Se crea un objeto Usuario con lo escrito en las casillas correspondientes al login y al password.
-					/*Trabajador t = new Trabajador(textFieldLogin.getText(), textFieldPassword.getText());
-					
-					// Comprueba si el usuario está en la base de datos e informa de la situación que se dé.
-					if (t.read()) {
-						textPaneEstado.setText("El login ha sido correcto.");
+			public void actionPerformed(ActionEvent arg0) { // Autentica al usuario e informa de la situaciï¿½n dada.
+				try {
+					final Trabajador trabajador= ControlAutenticacion.autenticar(textFieldLogin.getText(), textFieldPassword.getText());
+
+					if (trabajador instanceof Doctor) {
+						IDiagnosticar frameDiagnosticar= new IDiagnosticar((Doctor)trabajador);
+						frameDiagnosticar.setVisible(true);
 					} else {
-						textPaneEstado.setText("El login ha sido incorrecto, puesto que no se ha encontrado registrado o no tiene esa contraseña.");
+						IOrganizarCitas frameCitas= new IOrganizarCitas();
+						frameCitas.setVisible(true);
 					}
-					
-				} catch (InvalidLoginException e) {
-					textPaneEstado.setText("No se cumple el mínimo de caracteres en el login. Debe tener al menos 4 caracteres.");
-				} catch (InvalidPasswordException e) {
-					textPaneEstado.setText("No se cumple el mínimo de caracteres en el password. Debe tener al menos 4 caracteres.");
 				} catch (Exception e) {
-					textPaneEstado.setText("Ha ocurrido un error inesperado. Vuelva a intentarlo.");
-				}*/
-				// Abre la ventana emergente "Organizar Citas"
-					IOrganizarCitas frameCitas = new IOrganizarCitas();
-					frameCitas.setVisible(true);
-					// Abre la ventana emergente "Diagnosticar al paciente"
-					IDiagnosticar frameDiagnosticar = new IDiagnosticar();
-					frameDiagnosticar.setVisible(true);
+					textPaneEstado.setText(e.getMessage());
+				}
 			}
 		});
 		buttonAceptar.setBounds(250, 170, 140, 29); // Dimensiones fijas
 		contentPane.add(buttonAceptar);
 
-		// Botón Limpiar
+		// Botï¿½n Limpiar
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
@@ -150,31 +139,6 @@ public class IAutenticación extends JFrame {
 		btnLimpiar.setBounds(40, 170, 140, 29); // Dimensiones fijas
 		contentPane.add(btnLimpiar);
 		
-		/*
-		// Botón Nuevo Usuario
-		
-		JButton btnNuevoUsuario = new JButton("Organizar citas");
-		btnNuevoUsuario.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent arg0) { // Abre la ventana emergente "Dar de alta a un nuevo usuario"
-				IOrganizarCitas frame = new IOrganizarCitas();
-				frame.setVisible(true);
-			}
-		});
-		btnNuevoUsuario.setBounds(264, 200, 140, 50); // Dimensiones fijas
-		contentPane.add(btnNuevoUsuario);
-
-		// Botón Eliminar Usuario
-		
-		JButton btnEliminarUsuario = new JButton("Diagnosticar al paciente");
-		btnEliminarUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { // Abre la ventana emergente "Eliminar un usuario registrado"
-				IDiagnosticar frame = new IDiagnosticar();
-				frame.setVisible(true);
-			}
-		});
-		btnEliminarUsuario.setBounds(264, 270, 140, 50); // Dimensiones fijas
-		contentPane.add(btnEliminarUsuario);
-		*/
 	}
 
 }

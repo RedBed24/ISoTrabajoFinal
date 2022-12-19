@@ -27,7 +27,7 @@ public class Trabajador extends Persona{
 		// obtenemos los posiblesTrabajadores
 		Vector<Vector<Object>> posiblesTrabajadores= a.select("trabajadores", columns, values);
 		
-		if (posiblesTrabajadores.size()!= 1) throw new NullPointerException("No se ha encontrado el trabajador con loging: "+login+", o no concuerda la contraseña.");
+		if (posiblesTrabajadores.size()!= 1) throw new NullPointerException("No se ha encontrado el trabajador con login: \""+login+"\", o no concuerda la contraseña.");
 		
 		//                                    la columna -v es la que tiene el tipo de trabajador
 		switch (((String) posiblesTrabajadores.get(0).get(3)).toLowerCase()) {
