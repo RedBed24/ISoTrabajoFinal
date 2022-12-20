@@ -24,6 +24,14 @@ Contiene tanto clases de información, como clases de control e híbridos.
 
 Clases encargadas de comunicarse con la base de datos. Tiene la información necesaria para poder hacer todo lo relacionado con esto.
 
+### ISOspital.jar
+
+Es el ejecutable que se usará durante la entrega.
+
+### infoDataBase/
+
+Contiene scripts SQL y ficheros .csv con la información necesaria para la base de datos.
+
 ### hospital/lib/
 
 Contiene también una librería externa para la conexión con una base de datos local MySQL.
