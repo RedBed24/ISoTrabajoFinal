@@ -12,27 +12,27 @@ public class Doctor extends PersonalSanitario {
 	}
 
 	public String diagnosticar(final String diagnostico) throws Exception {
-		final Cita citaActual= Cita.READ(this, new Date());
+		final Cita citaActual = Cita.READ(this, new Date());
 
 		citaActual.setDiagnostico(diagnostico);
 		
-		return citaActual.UPDATE() ? "Operación realizada satisfactoriamente" : "Error al actualizar la cita.";
+		return citaActual.UPDATE() ? "Diagnóstico añadido satisfactoriamente" : "Error al actualizar la cita";
 	}
 
 	public String cancelarDiagnostico() throws Exception {
 		final Cita citaActual= Cita.READ(this, new Date());
 		
-		return citaActual.DELETE() ? "Operación realizada satisfactoriamente" : "Error al borrar la cita." ;
+		return citaActual.DELETE() ? "Cita eliminada satisfactoriamente" : "Error al eliminar la cita" ;
 	}
 
 	public static Persona READ(final String DNI) throws Exception {
-		final Agente a= Agente.getAgente();
-		final String columnas[]= { "DNI", };
-		final String valores[]= { DNI, };
+		final Agente a = Agente.getAgente();
+		final String columnas[] = { "DNI", };
+		final String valores[] = { DNI, };
 
-		final Vector<Vector<Object>> posiblesDoctor= a.select("trabajadores", columnas, valores);
+		final Vector<Vector<Object>> posiblesDoctor = a.select(NOMBRE_TABLA_TRABAJADORES, columnas, valores);
 		
-		if (posiblesDoctor.size()!= 1) throw new NullPointerException("No se ha encontrado el doctor buscado.");
+		if (posiblesDoctor.size( ) != 1) throw new NullPointerException("No se ha encontrado el doctor buscado.");
 		
 		if (!((String) posiblesDoctor.get(0).get(3)).equalsIgnoreCase("doctor")) throw new IllegalArgumentException("El DNI "+DNI+" no es de un doctor.");
 

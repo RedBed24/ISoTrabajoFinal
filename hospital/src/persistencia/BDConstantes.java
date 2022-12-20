@@ -9,9 +9,11 @@ public interface BDConstantes {
 	String DBUSER ="root";
 	String DBPASS ="root";
 	
-	// Información sobre las tablas
-	// posiblemente esto deba de estar dentro de cada clase, por ejemplo, si queremos hacer que todo vaya mediante constantes
-	String NOMBRETABLACITAS= "citas";
+	// Informaci�n sobre las tablas
+	String NOMBRE_TABLA_CITAS = "citas";
+	String NOMBRE_TABLA_TRABAJADORES = "trabajadores";
+	String NOMBRE_TABLA_PACIENTES = "pacientes";
+	String NOMBRE_TABLA_INGRESOS = "ingresos";
 	
 	// Identificador ODBC de la base de datos
 	String URL = "jdbc:mysql://localhost:3306/"+DBNAME+"?user="+DBUSER+"&password="+DBPASS;

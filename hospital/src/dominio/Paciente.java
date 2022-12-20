@@ -4,9 +4,10 @@ import java.util.Date;
 import java.util.Vector;
 
 import persistencia.Agente;
+import persistencia.BDConstantes;
 
-public class Paciente extends Persona {
-	public enum PrioridadPaciente { MILD, SEVERE, VITAL, };
+public class Paciente extends Persona implements BDConstantes {
+	public enum PrioridadPaciente { LEVE, MODERADO, SEVERO, VITAL, };
 	private PrioridadPaciente prioridad;
 	public Ingreso ingreso;
 	
@@ -15,21 +16,21 @@ public class Paciente extends Persona {
 	}
 
 	public boolean CREATE() throws Exception {
-		final Agente a= Agente.getAgente();
-		final String columns[]= { "DNI" };
-		final String values[]= { dni };
+		final Agente a = Agente.getAgente();
+		final String columns[] = { "DNI" };
+		final String values[] = { dni };
 
-		return a.insert("pacientes", columns, values)== 1;
+		return a.insert(NOMBRE_TABLA_PACIENTES, columns, values) == 1;
 	}
 
 	public static Persona READ(String DNI) throws Exception {
-		final Agente a= Agente.getAgente();
-		final String columnas[]= { "DNI", };
-		final String valores[]= { DNI, };
+		final Agente a = Agente.getAgente();
+		final String columnas[] = { "DNI", };
+		final String valores[] = { DNI, };
 
-		Vector<Vector<Object>> posiblePaciente= a.select("pacientes", columnas, valores);
+		Vector<Vector<Object>> posiblePaciente = a.select(NOMBRE_TABLA_PACIENTES, columnas, valores);
 		
-		if (posiblePaciente.size()!= 1) throw new NullPointerException("No se ha encontrado la persona con el DNI buscado.");
+		if (posiblePaciente.size() != 1) throw new NullPointerException("No se ha encontrado la persona con el DNI buscado.");
 		
 		return new Paciente((String) posiblePaciente.get(0).get(0));
 	}

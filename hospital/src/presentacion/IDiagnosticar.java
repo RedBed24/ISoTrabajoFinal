@@ -21,8 +21,8 @@ import java.awt.event.ActionEvent;
 public class IDiagnosticar extends JFrame {
 
 	private JPanel contentPane; // Formulario 
-	private JTextPane textPaneDiagnostico; // Panel de texto
-	private JTextPane textPaneEstado; // Panel de texto
+	private JTextPane textPaneDiagnostico; // Panel de texto para el diagnóstico
+	private JTextPane textPaneEstado; // Panel de texto para el estado
 
 	/**
 	 * Creaci�n del formulario
@@ -30,7 +30,7 @@ public class IDiagnosticar extends JFrame {
 
 	public IDiagnosticar(final Doctor doctor) {
 		
-		// Ventana emergente "Eliminar un usuario registrado"
+		// Ventana emergente "IDiagnosticar"
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -51,6 +51,12 @@ public class IDiagnosticar extends JFrame {
 		lblDiagnostico.setFont(new Font("Arial",3, 20));
 		contentPane.add(lblDiagnostico);
 		
+		JLabel lblEstado = new JLabel("Estado");
+		lblEstado.setForeground(Color.RED);
+		lblEstado.setBounds(180, 390, 200, 30);
+		lblEstado.setFont(new Font("Arial",3, 20));
+		contentPane.add(lblEstado);
+		
 		// Valores de los atributos correspondientes al panel
 			
 		textPaneDiagnostico = new JTextPane();
@@ -58,23 +64,17 @@ public class IDiagnosticar extends JFrame {
 		textPaneDiagnostico.setEditable(true);
 		textPaneDiagnostico.setBounds(6, 50, 407, 330);
 		contentPane.add(textPaneDiagnostico);
-		
-		JLabel lblEstado = new JLabel("Estado");
-		lblEstado.setForeground(Color.RED);
-		lblEstado.setBounds(180, 390, 200, 30);
-		lblEstado.setFont(new Font("Arial",3, 20));
-		contentPane.add(lblEstado);
 
 		textPaneEstado= new JTextPane();
-		textPaneEstado.setToolTipText("Aquí se mostrará el estado de realizar la operación");
 		textPaneEstado.setEditable(false);
 		textPaneEstado.setBounds(6, 420, 407, 60);
 		contentPane.add(textPaneEstado);
-		// Bot�n Diagnosticar
+		
+		// Botón Diagnosticar
 		
 		JButton btnDiagnosticar = new JButton("Diagnosticar");
 		btnDiagnosticar.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) { // Elimina al usuario (o no) e informa de la situaci�n.
+		public void actionPerformed(ActionEvent arg0) { // Añaade el diagnóstico a la cita
 				try {
 					textPaneEstado.setText(doctor.diagnosticar(textPaneDiagnostico.getText()));
 				} catch (Exception e) {
@@ -85,7 +85,7 @@ public class IDiagnosticar extends JFrame {
 		btnDiagnosticar.setBounds(260, 515, 141, 29); // Dimensiones fijas
 		contentPane.add(btnDiagnosticar);
 		
-		// Bot�n Cancelar
+		// Botón Cancelar
 		
 		JButton btnCancelar = new JButton("Cancelar la cita");
 		btnCancelar.addActionListener(new ActionListener() {

@@ -3,8 +3,9 @@ package dominio;
 import java.util.Vector;
 
 import persistencia.Agente;
+import persistencia.BDConstantes;
 
-public class Trabajador extends Persona{
+public class Trabajador extends Persona implements BDConstantes{
 	protected String login;
 	protected String password;
 	
@@ -13,21 +14,21 @@ public class Trabajador extends Persona{
 	}
 
 	public static Trabajador READ(final String login, final String password) throws Exception {
-		final Agente a= Agente.getAgente();
+		final Agente a = Agente.getAgente();
 
-		final String columns[]= {
+		final String columns[] = {
 				"login",
 				"password",
 		};
-		final String values[]= {
+		final String values[] = {
 				login,
 				password,
 		};
 		
 		// obtenemos los posiblesTrabajadores
-		Vector<Vector<Object>> posiblesTrabajadores= a.select("trabajadores", columns, values);
+		Vector<Vector<Object>> posiblesTrabajadores = a.select(NOMBRE_TABLA_TRABAJADORES, columns, values);
 		
-		if (posiblesTrabajadores.size()!= 1) throw new NullPointerException("No se ha encontrado el trabajador con login: \""+login+"\", o no concuerda la contraseÃ±a.");
+		if (posiblesTrabajadores.size() != 1) throw new NullPointerException("No se ha encontrado el trabajador con login: \""+login+"\", o no concuerda la contraseña \""+password+"\"");
 		
 		//                                    la columna -v es la que tiene el tipo de trabajador
 		switch (((String) posiblesTrabajadores.get(0).get(3)).toLowerCase()) {

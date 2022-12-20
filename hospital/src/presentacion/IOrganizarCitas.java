@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -26,11 +27,10 @@ public class IOrganizarCitas extends JFrame {
 	private JTextField textFieldDNIDoctor; // Campo de texto del DNI del doctor
 	private JTextField textFieldFechaHoraInicial; // Campo de texto de la fecha y hora
 	private JTextField textFieldFechaHoraFinal; // Campo de texto de la fecha y hora
-	private JTextField textFieldPrioridad; // Campo de texto de la prioridad del paciente
 	private JTextPane textPaneEstado; // Panel de texto
 	
 	/**
-	 * Creaci�n de la estructura
+	 * Creación del formulario
 	 */
 	
 	public IOrganizarCitas() {
@@ -59,15 +59,25 @@ public class IOrganizarCitas extends JFrame {
 		contentPane.add(lblDNIDoctor);
 		
 		JLabel lblFechaHora = new JLabel("Fecha y Hora de inicio");
-		lblFechaHora.setBounds(20, 130, 100, 36);
+		lblFechaHora.setBounds(20, 130, 150, 36);
 		contentPane.add(lblFechaHora);
 		
+		JLabel lblFormato = new JLabel("Formato de fecha y hora");
+		lblFormato.setForeground(Color.GREEN);
+		lblFormato.setBounds(40, 160, 150, 36);
+		contentPane.add(lblFormato);
+		
+		JLabel lblEjemploHora = new JLabel("Ejemplo: "+DateFormat.getDateTimeInstance().format(new Date()));
+		lblEjemploHora.setForeground(Color.GREEN);
+		lblEjemploHora.setBounds(200, 160, 170, 36);
+		contentPane.add(lblEjemploHora);
+		
 		JLabel lblFechaHoraFinal = new JLabel("Fecha y Hora de final");
-		lblFechaHoraFinal.setBounds(20, 180, 100, 36);
+		lblFechaHoraFinal.setBounds(20, 190, 150, 36);
 		contentPane.add(lblFechaHoraFinal);
 
 		JLabel lblPrioridad = new JLabel("Prioridad");
-		lblPrioridad.setBounds(58, 230, 100, 16);
+		lblPrioridad.setBounds(58, 240, 100, 16);
 		contentPane.add(lblPrioridad);
 		
 		JLabel lblEstado = new JLabel("Estado");
@@ -94,43 +104,48 @@ public class IOrganizarCitas extends JFrame {
 		contentPane.add(textFieldFechaHoraInicial);
 		
 		textFieldFechaHoraFinal= new JTextField();
-		textFieldFechaHoraFinal.setBounds(180, 180, 200, 28);
+		textFieldFechaHoraFinal.setBounds(180, 195, 200, 28);
 		textFieldFechaHoraFinal.setColumns(10);
 		contentPane.add(textFieldFechaHoraFinal);
-
-		textFieldPrioridad = new JTextField();
-		textFieldPrioridad.setBounds(180, 230, 200, 28);
-		textFieldPrioridad.setColumns(10);
-		contentPane.add(textFieldPrioridad);
 		
 		textPaneEstado= new JTextPane();
-		textPaneEstado.setToolTipText("Aquí se mostrará el estado de realizar la operación");
 		textPaneEstado.setEditable(false);
 		textPaneEstado.setBounds(6, 370, 407, 60);
 		contentPane.add(textPaneEstado);
+		
+		// Lista desplegable de las prioridades
+		
+		String[] prioridades = {"", "Leve", "Moderado", "Severo", "Vital"};
+		JComboBox<String> listaDesplegablePrioridades = new JComboBox<String>(prioridades);
+		contentPane.add(listaDesplegablePrioridades);
+		listaDesplegablePrioridades.setBounds(180, 235, 200, 28);
 		
 		// Bot�n Organizar citas
 		
 		JButton btnOrganizarCitas = new JButton("Organizar citas");
 		btnOrganizarCitas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) { // Registra al usuario introducido (o no) e informa de la situaci�n.
+			public void actionPerformed(ActionEvent arg0) { // Registra la cita(o no) e informa de la situación.
 				try {
+					if(textFieldDNIPaciente.getText().equals("")) throw new IllegalArgumentException("Error, DNI vac�o");
+					
 					final DateFormat d= DateFormat.getDateTimeInstance();
 					final Date fechaInicio= d.parse(textFieldFechaHoraInicial.getText());
 					final Date fechaFin= d.parse(textFieldFechaHoraFinal.getText());
 
-					if (fechaInicio.after(fechaFin)) throw new IllegalArgumentException("Error, la fecha de inicio está tras la fecha de fin.");
-					if (fechaInicio.before(new Date())) throw new IllegalArgumentException("Error, la fecha espeficificada ya ha pasadao.");
+					if (fechaInicio.after(fechaFin)) throw new IllegalArgumentException("Error, la fecha de inicio está después de la fecha de fin.");
+					if (fechaInicio.before(new Date())) throw new IllegalArgumentException("Error, la fecha especificada ya ha pasado.");
+			
 
 					final Paciente.PrioridadPaciente prioridad;
-					switch (textFieldPrioridad.getText().toLowerCase()) {
-					case "vital": prioridad= dominio.Paciente.PrioridadPaciente.VITAL; break;
-					case "severe": prioridad= dominio.Paciente.PrioridadPaciente.SEVERE; break;
-					case "mild": prioridad= dominio.Paciente.PrioridadPaciente.MILD; break;
-					default: throw new IllegalArgumentException("Error, no se ha introducido una de las posibles prioridades.");
+					switch (listaDesplegablePrioridades.getItemAt(listaDesplegablePrioridades.getSelectedIndex())) {
+						case "Vital": prioridad= dominio.Paciente.PrioridadPaciente.VITAL; break;
+						case "Severo": prioridad= dominio.Paciente.PrioridadPaciente.SEVERO; break;
+						case "Moderado": prioridad= dominio.Paciente.PrioridadPaciente.MODERADO; break;
+						case "Leve": prioridad=dominio.Paciente.PrioridadPaciente.LEVE; break;
+						default: throw new IllegalArgumentException("Error, no se ha introducido una de las posibles prioridades.");
 					}
 
-					textPaneEstado.setText(dominio.ControlAdministrativo.organizarCitasAutomotico(textFieldDNIPaciente.getText(), textFieldDNIDoctor.getText(), fechaInicio, fechaFin, prioridad));
+					textPaneEstado.setText(dominio.ControlAdministrativo.organizarCitasAutomatico(textFieldDNIPaciente.getText(), textFieldDNIDoctor.getText(), fechaInicio, fechaFin, prioridad));
 				} catch (Exception e) {
 					textPaneEstado.setText(e.getMessage());
 				}
@@ -143,12 +158,12 @@ public class IOrganizarCitas extends JFrame {
 		
 		JButton buttonLimpiar = new JButton("Limpiar");
 		buttonLimpiar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) { // Se limpian los campos de texto y el panel.
+			public void actionPerformed(ActionEvent arg0) { // Se limpian los campos de texto, la lista desplegable y el panel.
 				textFieldDNIPaciente.setText("");
 				textFieldDNIDoctor.setText("");
 				textFieldFechaHoraInicial.setText("");
 				textFieldFechaHoraFinal.setText("");
-				textFieldPrioridad.setText("");
+				listaDesplegablePrioridades.setSelectedIndex(0);
 				textPaneEstado.setText("");
 			}
 		});

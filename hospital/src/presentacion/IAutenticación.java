@@ -28,7 +28,7 @@ public class IAutenticación extends JFrame {
 	private JTextPane textPaneEstado;
 
 	/** 
-	 * Arranca la aplicaci�n
+	 * Arranca la aplicación
 	 */
 	
 	public static void main(String[] args) {
@@ -45,12 +45,12 @@ public class IAutenticación extends JFrame {
 	}
 
 	/**
-	 * Creaci�n del formulario
+	 * Creación del formulario
 	 */
 	
 	public IAutenticación() {
 		
-		// Ventana principal de la aplicaci�n
+		// Ventana principal de la aplicación
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,10 +59,10 @@ public class IAutenticación extends JFrame {
 		
 		setContentPane(contentPane);
 		setTitle(" IAutenticacion ");
-		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensi�n por lo que hacemos que no se pueda maximizar.
+		setResizable(false); // Nuestra ventana no dispone de mecanismo de redimensión por lo que hacemos que no se pueda maximizar.
 		setBounds(200, 200, 435, 375); // Dimensiones fijas del formulario al abrirlo.
 		setLocationRelativeTo(null); // Tras fijar las dimensiones, hacemos que el formulario se abra en el centro de la pantalla.
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicaci�n.
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicación.
 		
 		// Etiquetas
 
@@ -98,24 +98,23 @@ public class IAutenticación extends JFrame {
 		contentPane.add(textFieldPassword);
 			
 		textPaneEstado = new JTextPane();
-		textPaneEstado.setToolTipText("Panel para mostrar el restultado de la comprobaci�n de login o las excepciones lanzadas");
 		textPaneEstado.setEditable(false);
 		textPaneEstado.setBounds(7, 240, 410, 90);
 		contentPane.add(textPaneEstado);
 
-		// Bot�n Iniciar sesi�n
+		// Botón Iniciar sesión
 		
 		JButton buttonAceptar = new JButton("Iniciar sesion");
 		buttonAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) { // Autentica al usuario e informa de la situaci�n dada.
+			public void actionPerformed(ActionEvent arg0) { // Autentica al usuario e informa de la situación dada.
 				try {
-					final Trabajador trabajador= ControlAutenticacion.autenticar(textFieldLogin.getText(), textFieldPassword.getText());
+					final Trabajador trabajador = ControlAutenticacion.autenticar(textFieldLogin.getText(), textFieldPassword.getText());
 
 					if (trabajador instanceof Doctor) {
-						IDiagnosticar frameDiagnosticar= new IDiagnosticar((Doctor)trabajador);
+						IDiagnosticar frameDiagnosticar = new IDiagnosticar((Doctor)trabajador);
 						frameDiagnosticar.setVisible(true);
 					} else {
-						IOrganizarCitas frameCitas= new IOrganizarCitas();
+						IOrganizarCitas frameCitas = new IOrganizarCitas();
 						frameCitas.setVisible(true);
 					}
 					setVisible(false);
@@ -127,7 +126,7 @@ public class IAutenticación extends JFrame {
 		buttonAceptar.setBounds(250, 170, 140, 29); // Dimensiones fijas
 		contentPane.add(buttonAceptar);
 
-		// Bot�n Limpiar
+		// Botón Limpiar
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
