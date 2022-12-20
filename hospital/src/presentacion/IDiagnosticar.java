@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dominio.*;
-import excepciones.*;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -87,7 +86,7 @@ public class IDiagnosticar extends JFrame {
 		
 		// Botón Cancelar
 		
-		JButton btnCancelar = new JButton("Cancelar la cita");
+		JButton btnCancelar = new JButton("Borrar la cita");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {

@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dominio.*;
-import excepciones.*;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -126,7 +125,8 @@ public class IOrganizarCitas extends JFrame {
 		btnOrganizarCitas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) { // Registra la cita(o no) e informa de la situación.
 				try {
-					if(textFieldDNIPaciente.getText().equals("")) throw new IllegalArgumentException("Error, DNI vac�o");
+					if (!validateDNI(textFieldDNIPaciente.getText())) throw new IllegalArgumentException("Error, el DNI del paciente no cumple el formato de los DNIs.");
+					if (!validateDNI(textFieldDNIDoctor.getText())) throw new IllegalArgumentException("Error, el DNI del doctor no cumple el formato de los DNIs.");
 					
 					final DateFormat d= DateFormat.getDateTimeInstance();
 					final Date fechaInicio= d.parse(textFieldFechaHoraInicial.getText());
@@ -134,7 +134,8 @@ public class IOrganizarCitas extends JFrame {
 
 					if (fechaInicio.after(fechaFin)) throw new IllegalArgumentException("Error, la fecha de inicio está después de la fecha de fin.");
 					if (fechaInicio.before(new Date())) throw new IllegalArgumentException("Error, la fecha especificada ya ha pasado.");
-			
+					if (fechaFin.getTime()-fechaInicio.getTime() < 10*60000) throw new IllegalArgumentException("Error, la duración de la cita debe ser mayor de 10 minutos.");
+					if (fechaFin.getTime()-fechaInicio.getTime() > 60*60000) throw new IllegalArgumentException("Error, la duración de la cita no debe superar la hora.");
 
 					final Paciente.PrioridadPaciente prioridad;
 					switch (listaDesplegablePrioridades.getItemAt(listaDesplegablePrioridades.getSelectedIndex())) {
@@ -169,5 +170,14 @@ public class IOrganizarCitas extends JFrame {
 		});
 		buttonLimpiar.setBounds(60, 290, 141, 29); // Dimensiones fijas
 		contentPane.add(buttonLimpiar);
+	}
+	
+	private static boolean validateDNI(final String DNI) {
+		if (DNI.length()!= 9) return false;
+		for (int i= 0; i< 8; i++)
+			if ('0' < DNI.charAt(i) || DNI.charAt(i) > '9')
+				return false;
+			
+		return true;
 	}
 }
