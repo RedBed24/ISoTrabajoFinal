@@ -1,0 +1,10 @@
+insert into `iso`.`pacientes` (`DNI`) values ('00000000A');
+insert into `iso`.`pacientes` (`DNI`) values ('11111111B');
+insert into `iso`.`pacientes` (`DNI`) values ('22222222C');
+insert into `iso`.`pacientes` (`DNI`) values ('33333333D');
+insert into `iso`.`pacientes` (`DNI`) values ('44444444E');
+insert into `iso`.`pacientes` (`DNI`) values ('55555555F');
+insert into `iso`.`pacientes` (`DNI`) values ('66666666G');
+insert into `iso`.`pacientes` (`DNI`) values ('77777777H');
+insert into `iso`.`pacientes` (`DNI`) values ('88888888I');
+insert into `iso`.`pacientes` (`DNI`) values ('99999999J');

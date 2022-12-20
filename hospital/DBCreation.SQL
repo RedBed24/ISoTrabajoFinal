@@ -18,3 +18,7 @@ CREATE TABLE `iso`.`trabajadores` (
 CREATE TABLE `iso`.`pacientes` (
   `DNI` VARCHAR(9) NOT NULL,
   PRIMARY KEY (`DNI`));
+
+CREATE TABLE `iso`.`ingresos` (
+  `DNIingresado` VARCHAR(9) NOT NULL,
+  PRIMARY KEY (`DNIingresado`));
