@@ -19,16 +19,16 @@ public class ControlAdministrativo {
 		if (paciente.getPrioridad() == Paciente.PrioridadPaciente.VITAL) { 
 			final Ingreso nuevoIngreso = new Ingreso(paciente);
 			nuevoIngreso.CREATE();
-			return "Se ha creado un nuevo ingreso"+ (nuevoPaciente ? ", Además, se ha añadido el paciente a la base de datos." : ".");
+			return "Se ha creado un nuevo ingreso"+ (nuevoPaciente ? ", además, se ha añadido el paciente a la base de datos." : ".");
 		}
 
 		if (paciente.estaOcupadoEn(fechaInicio, fechaFin)) throw new IllegalArgumentException("El paciente está ocupado durante la fecha especificada.");
 
 		final Doctor doctor = (Doctor) Doctor.READ(DNIDoctor);
 
-		if (doctor.estaOcupadoEn(fechaInicio, fechaFin)) throw new IllegalArgumentException("El doctor está ocupado durante la fecha especificada"+ (nuevoPaciente ? ", Además, se ha añadido el paciente a la base de datos." : "."));
+		if (doctor.estaOcupadoEn(fechaInicio, fechaFin)) throw new IllegalArgumentException("El doctor está ocupado durante la fecha especificada"+ (nuevoPaciente ? ", además, se ha añadido el paciente a la base de datos." : "."));
 
 		final Cita cita = new Cita(fechaInicio, fechaFin, paciente, doctor);
-		return cita.CREATE() ? "Se ha guardado la cita correctamente" : "No se ha podido guardar la cita en la base de datos..."+ (nuevoPaciente ? ", Además, se ha añadido el paciente a la base de datos." : ".");
+		return cita.CREATE() ? "Se ha guardado la cita correctamente" : "No se ha podido guardar la cita en la base de datos..."+ (nuevoPaciente ? ", además, se ha añadido el paciente a la base de datos." : ".");
 	}
 }

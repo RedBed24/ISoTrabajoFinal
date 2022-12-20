@@ -173,9 +173,9 @@ public class IOrganizarCitas extends JFrame {
 	}
 	
 	private static boolean validateDNI(final String DNI) {
-		if (DNI.length()!= 9) return false;
+		if (DNI.length()!= 9 || !Character.isUpperCase(DNI.charAt(8))) return false;
 		for (int i= 0; i< 8; i++)
-			if ('0' < DNI.charAt(i) || DNI.charAt(i) > '9')
+			if (!Character.isDigit(DNI.charAt(i)))
 				return false;
 			
 		return true;
