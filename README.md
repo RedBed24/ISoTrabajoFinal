@@ -12,7 +12,7 @@ Sigue la división en:
 
 ### hospital/src/presentacion/
 
-Contiene aquellas clases de interfaz que se comunicarán con los usuarios finales. Es donde se localiza el main (actualmente en hospital/src/Main.java).
+Contiene aquellas clases de interfaz que se comunicarán con los usuarios finales. Es donde se localiza el main, en IAutenticación.java.
 
 ### hospital/src/dominio/
 
